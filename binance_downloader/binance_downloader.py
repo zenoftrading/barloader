@@ -5,7 +5,7 @@ from datetime import timedelta
 from tqdm import tqdm
 
 def calc_ticks(start, end, interval):
-    """Tick calculator for tqdm progress bar
+    """Ticks calculator for tqdm progress bar
 
     Args:
         start (datetime): From date
@@ -24,8 +24,8 @@ def calc_ticks(start, end, interval):
     else:
         return 1
 
-def bloader(client, coin='BTCUSDT', interval='1h', start=datetime.utcnow()-timedelta(days=1), end=datetime.utcnow(), to_csv=False):
-    """Downloader history data from binance
+def get(client, coin='BTCUSDT', interval='1h', start=datetime.utcnow()-timedelta(days=1), end=datetime.utcnow(), to_csv=False):
+    """History data downloader from binance
 
     Args:
         client ([type]): pytho-binance Client
@@ -41,6 +41,8 @@ def bloader(client, coin='BTCUSDT', interval='1h', start=datetime.utcnow()-timed
     df = pd.DataFrame()
     start_str = start.strftime('%Y-%m-%d %H:%M:%S')
     end_str = end.strftime('%Y-%m-%d %H:%M:%S')
+
+    print(f'downloading {coin} {interval} from {start_str} to {end_str}')
 
     # set tqdm progress bar
     total = calc_ticks(start, end, interval)
@@ -86,17 +88,18 @@ def bloader(client, coin='BTCUSDT', interval='1h', start=datetime.utcnow()-timed
         filename = f'{coin}_{interval}.csv'
         df.to_csv(filename)
         print(f'saved to {filename}')
-
+    
     return df
 
 def main():
+    # usage example
     client = Client('api key', 'api secret')
     coin = 'ETHUSDT'
     interval = '1m'
     start = datetime(2018, 1, 1)
     end = datetime(2019, 2, 1)
     
-    candles = bloader(client, coin=coin, interval=interval, start=start, end=end, to_csv=True)
+    candles = get(client, coin=coin, interval=interval, start=start, end=end, to_csv=True)
     print(candles)
 
 if __name__ == '__main__':
