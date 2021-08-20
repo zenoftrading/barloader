@@ -1,6 +1,9 @@
-# Binance history data downloader
+# History OHLC data downloader
 
-Download history data from binance and save to dataframe or csv file
+Download history data from:
+- yahoo finance
+- finam
+- binance
 
 ## Requirements
 
@@ -9,77 +12,123 @@ python 3+
 python-binance
 pandas
 tqdm
+dotmap
+finam-export
+loguru
+yfinance
 ```
 
 ## Install
 
 ```
-git install git+https://github.com/zenoftrading/binance_downloader.git
+git install git+https://github.com/zenoftrading/barloader.git
 ```
 
 ## Usage
 
-Minimal interface:
+Minimal interface for finam:
 
 ```
-from binance.client import Client
-from binance_downloader import binance_downloader as bd
+from barloader.barlodaer import BarLoader
 
-api_key = 'your binance api key'
-api_secret = 'your binance api secret'
-
-client = Client(api_key, api_secret)
-
-candles = bd.get(client)
-print(candles)
+bl = BarLoader()
+   
+f = bl.finam(['GAZP', 'SBER'], tocsv=False)
+print(f)
 ```
 
 Output:
 
 ```
-downloading BTCUSDT 1h from 2021-08-05 14:55:59 to 2021-08-06 14:55:59
-                               open            high             low           close         volume
-dateTime                                                                                          
-2021-08-05 15:00:00  39005.30000000  39370.00000000  38545.59000000  38750.01000000  5612.00309000
-2021-08-05 16:00:00  38750.00000000  39779.00000000  38737.31000000  39739.72000000  5641.43756100
-...
-2021-08-06 13:00:00  40762.87000000  41025.00000000  40700.68000000  40924.07000000  2340.43658100
-2021-08-06 14:00:00  40924.08000000  40973.42000000  40649.89000000  40768.81000000  1563.73017300
+2021-08-20 10:27:43.700 | INFO     | __main__:finam:152 - GAZP
+2021-08-20 10:27:51.300 | INFO     | __main__:finam:152 - SBER
+[              Open    High     Low   Close    Volume
+Date                                                
+2021-08-13  292.65  293.90  291.75  292.70  21802270
+2021-08-16  291.47  295.48  290.95  295.10  32273890
+2021-08-17  295.13  299.50  290.32  298.32  50482060
+2021-08-18  299.00  299.95  295.00  295.05  35531240
+2021-08-19  293.49  294.72  289.68  293.68  55911470
+2021-08-20  293.79  294.90  292.56  293.22   4358120,               Open    High     Low   Close    Volume
+Date                                                
+2021-08-13  328.60  330.27  327.31  328.68  18758270
+2021-08-16  327.56  330.52  327.13  329.36  23916510
+2021-08-17  329.00  335.70  328.55  334.50  42463620
+2021-08-18  336.05  338.99  333.26  334.90  36270350
+2021-08-19  333.50  334.00  329.10  332.69  45936410
+2021-08-20  332.20  333.27  330.33  330.47   3527750]
 ```
 
-Get custom data:
+Minimal interface for yahoo finance:
 
 ```
+from barloader.barlodaer import BarLoader
+
+bl = BarLoader()
+
+bl.yf(['AAPL', 'TSLA'])
+```
+
+Minimal interface for finam futures:
+
+```
+from barloader.barlodaer import BarLoader
+
+bl = BarLoader()
+
+bl.finam(['Si', 'RTS'], market='futures')
+```
+
+Minimal interface for binance:
+
+```
+from barloader.barloader import BarLoader
 from binance.client import Client
-from binance_downloader import binance_downloader as bd
+
+bl = BarLoader()
+api_key = 'your binance api key'
+api_secret = 'your binance api secret'
+client = Client(api_key, api_secret)
+
+bl.binance(['BTCUSDT', 'BNBETH'], client=client)
+```
+
+All data will be downloaded to folder '1d'.
+
+For fast access to tickers library get saved some tickers in file `tickers.py`
+
+```
+from barloader import tickers as t
+
+bl.yf(t.usetf)
+bl.finam(t.rufutures, market='futures')
+bl.yf(t.currency, postfix=t.currency.yf_postfix)
+```
+
+Set custom start end data and interval:
+
+```
 from datetime import datetime
 
-api_key = 'your binance api key'
-api_secret = 'your binance api secret'
-
-client = Client(api_key, api_secret)
-
-coin = 'ETHUSDT'
-interval = '1m' # support '1m', '1h' or '1d'
-start = datetime(2018, 1, 1)
-end = datetime(2018, 1, 2)
-candles = bd.get(client, coin=coin, interval=interval, start=start, end=end, to_csv=True)
-print(candles)
+start = datetime(2019, 1, 1)
+end = datetime(2019, 2, 1)
+interval = '1h'
+bl.yf(t.usetf, start=start, end=end, interval=interval)
+bl.finam(t.rufutures, market='futures', start=start, end=end, interval=interval)
+bl.yf(t.currency, postfix=t.currency.yf_postfix, start=start, end=end, interval=interval)
 ```
 
-Output:
+Or use short notation:
 
 ```
-downloading ETHUSDT 1m from 2018-01-01 00:00:00 to 2018-01-02 00:00:00
-1441it [00:01, 780.52its]           
-saved to ETHUSDT_1m.csv
-                             open          high           low         close        volume
-dateTime                                                                                 
-2018-01-01 00:00:00  733.01000000  733.97000000  732.75000000  732.75000000   19.77247000
-2018-01-01 00:01:00  733.34000000  734.52000000  732.51000000  732.51000000   26.05199000
-...                           ...           ...           ...           ...           ...
-2018-01-01 23:59:00  755.00000000  755.01000000  754.34000000  754.99000000   40.92658000
-2018-01-02 00:00:00  754.99000000  757.76000000  754.34000000  757.76000000  108.80959000
+from datetime import datetime
 
-[1441 rows x 5 columns]
+bl = BarLoader()
+bl.start = datetime(2019, 1, 1)
+bl.end = datetime(2019, 2, 1)
+bl.interval = '1h'
+
+bl.yf(t.usetf)
+bl.finam(t.rufutures, market='futures')
+bl.yf(t.currency, postfix=t.currency.yf_postfix)
 ```
