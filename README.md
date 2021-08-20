@@ -21,7 +21,7 @@ yfinance
 ## Install
 
 ```
-git install git+https://github.com/zenoftrading/barloader.git
+pip install git+https://github.com/zenoftrading/barloader.git
 ```
 
 ## Usage
