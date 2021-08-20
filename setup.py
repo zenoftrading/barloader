@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(
-   name='History data downloader from yahoo finance, finam and binance',
-   version='0.1',
+   name='barloader',
+   version='0.2',
    description='Download history data from https://finance.yahoo.com, https://www.finam.ru and https://www.binance.com and save to dataframe or csv file',
    author='Zenoftrading',
    url='https://github.com/zenoftrading/barloader',

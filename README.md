@@ -21,7 +21,7 @@ yfinance
 ## Install
 
 ```
-git install git+https://github.com/zenoftrading/barloader.git
+pip install git+https://github.com/zenoftrading/barloader.git
 ```
 
 ## Usage
@@ -100,9 +100,9 @@ For fast access to tickers library get saved some tickers in file `tickers.py`
 ```
 from barloader import tickers as t
 
-bl.yf(t.usetf)
-bl.finam(t.rufutures, market='futures')
-bl.yf(t.currency, postfix=t.currency.yf_postfix)
+bl.yf(t.usetf.tickers)
+bl.finam(t.rufutures.tickers, market='futures')
+bl.yf(t.currency.tickers, postfix=t.currency.yf_postfix)
 ```
 
 Set custom start end data and interval:
@@ -113,9 +113,9 @@ from datetime import datetime
 start = datetime(2019, 1, 1)
 end = datetime(2019, 2, 1)
 interval = '1h'
-bl.yf(t.usetf, start=start, end=end, interval=interval)
-bl.finam(t.rufutures, market='futures', start=start, end=end, interval=interval)
-bl.yf(t.currency, postfix=t.currency.yf_postfix, start=start, end=end, interval=interval)
+bl.yf(t.usetf.tickers, start=start, end=end, interval=interval)
+bl.finam(t.rufutures.tickers, market='futures', start=start, end=end, interval=interval)
+bl.yf(t.currency.tickers, postfix=t.currency.yf_postfix, start=start, end=end, interval=interval)
 ```
 
 Or use short notation:
@@ -128,7 +128,7 @@ bl.start = datetime(2019, 1, 1)
 bl.end = datetime(2019, 2, 1)
 bl.interval = '1h'
 
-bl.yf(t.usetf)
-bl.finam(t.rufutures, market='futures')
-bl.yf(t.currency, postfix=t.currency.yf_postfix)
+bl.yf(t.usetf.tickers)
+bl.finam(t.rufutures.tickers, market='futures')
+bl.yf(t.currency.tickers, postfix=t.currency.yf_postfix)
 ```

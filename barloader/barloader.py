@@ -89,7 +89,7 @@ class BarLoader:
                 logger.info(human_filter)
                 df = yf.download(ticker, start=start, end=end, interval=interval, progress=False)
                 if tocsv: 
-                    df.tocsv(f".{os.sep}{directory}{os.sep}{human_filter}.csv")
+                    df.to_csv(f".{os.sep}{directory}{os.sep}{human_filter}.csv")
                 else:
                     tickers_list.append(df)
             except Exception as e:
@@ -158,7 +158,7 @@ class BarLoader:
                 columns = {'<DATE>': 'Date', '<OPEN>': 'Open', '<HIGH>': 'High', '<LOW>': 'Low', '<CLOSE>': 'Close', '<VOL>': 'Volume'}
                 df = df.rename(columns=columns).set_index('Date')
                 if tocsv: 
-                    df.tocsv(f".{os.sep}{directory}{os.sep}{ticker}.csv")
+                    df.to_csv(f".{os.sep}{directory}{os.sep}{ticker}.csv")
                 else:
                     tickers_list.append(df)
                 time.sleep(random.randint(3, 5))                
@@ -231,7 +231,7 @@ class BarLoader:
                 
                 # save to file
                 if tocsv:
-                    df.tocsv(f".{os.sep}{directory}{os.sep}{ticker}.csv")
+                    df.to_csv(f".{os.sep}{directory}{os.sep}{ticker}.csv")
                 else:
                     tickers_list.append(df)
             except Exception as e:
