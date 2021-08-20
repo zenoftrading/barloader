@@ -29,7 +29,7 @@ git install git+https://github.com/zenoftrading/barloader.git
 Minimal interface for finam:
 
 ```
-from barloader.barlodaer import Barloader
+from barloader.barlodaer import BarLoader
 
 bl = BarLoader()
    
@@ -62,7 +62,7 @@ Date
 Minimal interface for yahoo finance:
 
 ```
-from barloader.barlodaer import Barloader
+from barloader.barlodaer import BarLoader
 
 bl = BarLoader()
 
@@ -72,7 +72,7 @@ bl.yf(['AAPL', 'TSLA'])
 Minimal interface for finam futures:
 
 ```
-from barloader.barlodaer import Barloader
+from barloader.barlodaer import BarLoader
 
 bl = BarLoader()
 
@@ -82,7 +82,7 @@ bl.finam(['Si', 'RTS'], market='futures')
 Minimal interface for binance:
 
 ```
-from barloader.barloader import Barloader
+from barloader.barloader import BarLoader
 from binance.client import Client
 
 bl = BarLoader()
