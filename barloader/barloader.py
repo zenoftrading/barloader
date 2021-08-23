@@ -255,8 +255,8 @@ if __name__ == '__main__':
 
     # biance
     from binance.client import Client
-    api_key = 'TIrN3kQpIZbb53c4sQjNQIoy7BPRB3Za1l6R3XtgLMy6n0iQPgA0nDEKhpRJ6ZWZ'
-    api_secret = 'ZggMXLCPvExYliIs3hH5jTRKdOGKBPjMkiqjzUeFJOWEd5CuGhk0kWPV0houJ3di'
+    api_key = 'your api key'
+    api_secret = 'your api secret'
     client = Client(api_key, api_secret)
     b = bl.binance(['BTCUSDT', 'BNBETH'], client=client)
 
