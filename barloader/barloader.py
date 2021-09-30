@@ -20,8 +20,6 @@ from finam import Exporter, Market, Timeframe
 
 class BarLoader:
     """Data history downloader from yahoofinance, finam and binance.
-
-    Supported intervals: 1d, 1h
     """
     VALID_INTERVALS = ['1d', '1h']
 
@@ -135,7 +133,7 @@ class BarLoader:
             return
 
         if market == 'futures':
-            market = Market.FUTURES
+            market = Market.FUTURES_ARCHIVE
         else:
             market = Market.SHARES
 
